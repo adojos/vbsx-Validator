@@ -7,7 +7,6 @@
 '# exposes the power and flexibility of VB Script language and demonstrates how it 
 '# could be utilized for some specific XML related operations and automation.
 '# 
-'# 
 '# NOTES:
 '# 
 '# 
@@ -66,8 +65,7 @@ Dim strFilePath, ObjSchemaCache
 	strFilePath = ConsoleInput()	
 	Set objXSDFile = LoadXML(strFilePath)
 	
-	Set ObjSchemaCache = LoadSchemaCache(objXSDFile)
-	
+	Set ObjSchemaCache = LoadSchemaCache(objXSDFile)	
 	Call ValidateXML (objXMLFile, ObjSchemaCache)
 	
 	Set objXMLFile = Nothing
@@ -187,7 +185,7 @@ ErrFound = 0
 Select Case ObjParseErr.errorCode
 	Case 0
 		ConsoleOutput "", "verbose", LogHandle
-		strResult = "<INFO> XML SCHEMA VALIDATION: SUCCESS ! " & vbCrLf & ObjXMLDoc.url & vbCrLf '& ObjXSDDoc.url & vbCrLf
+		strResult = "<INFO> XML SCHEMA VALIDATION: SUCCESS ! " & vbCrLf & ObjXMLDoc.url & vbCrLf '& ObjXSDDoc.url
 		ConsoleOutput strResult, "verbose", LogHandle
 		ParseError = True
 	Case Else
