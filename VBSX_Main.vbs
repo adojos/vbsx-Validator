@@ -84,6 +84,10 @@ Dim ObjParseErr, ObjXML
 Dim IsWait
 
 Set ObjXML = CreateObject ("MSXML2.DOMDocument.6.0")
+    
+'    WScript.Echo("Microsoft XML Core Services (MSXML) 6.0 is not installed.\n"
+'          +"Download and install MSXML 6.0 from http://msdn.microsoft.com/xml\n"
+'          +"before continuing.");
 	
 	With ObjXML
 		'Set First Level DOM Properties
@@ -100,8 +104,6 @@ Set ObjXML = CreateObject ("MSXML2.DOMDocument.6.0")
 		Call ParseError (ObjXML.parseError, ObjXML)
 		Set LoadXML = False
 	Else
-		ConsoleOutput "<INFO> File Loaded Successfully ..." & strXmlPath, "verbose", LogHandle
-		ConsoleOutput "", "verbose", LogHandle
 		ConsoleOutput "<INFO> Configuring Second-Level XMLDOM Properties", "verbose", LogHandle
 		'ConsoleOutput "<INFO> Setting Up XML Namespace Property ...", "verbose", LogHandle
 		'ObjXML.setProperty "SelectionNamespaces", "xmlns:ns='" + ObjXML.documentElement.namespaceURI + "'"
@@ -112,6 +114,7 @@ Set ObjXML = CreateObject ("MSXML2.DOMDocument.6.0")
 		ConsoleOutput "<INFO> Setting 'resolve externals' to false (disabled)", "verbose", LogHandle
 		ObjXML.setProperty "ResolveExternals", False 
 		ConsoleOutput "<INFO> Second-Level XMLDOM Properties configured successfully ..! ", "verbose", LogHandle
+		ConsoleOutput "<INFO> File Loaded Successfully ..." & strXmlPath, "verbose", LogHandle
 		Set LoadXML = ObjXML
 	End If
 
@@ -125,13 +128,17 @@ Public Function LoadSchemaCache (objXSDFile)
 Dim ObjSchemaCache, strNsURI
 	
 	Set ObjSchemaCache = CreateObject("MSXML2.XMLSchemaCache.6.0")
-	ObjSchemaCache.validateOnload = False ' This method applies to only Schema Cache not XSD or XML
+	ObjSchemaCache.validateOnload = False ' This method applies to only [Schema Cache] not (XSD or XML)
 	
+	ConsoleOutput "", "verbose", LogHandle
+	ConsoleOutput "<INFO> Creating Schema Cache Collection", "verbose", LogHandle
+	
+	'Get targetNamespace property from XSD
 	strNsURI = GetNamespaceURI (objXSDFile)
 	
 	'Load XSD from the Path
 	ObjSchemaCache.Add strNsURI, objXSDFile
-	ConsoleOutput "INFO! Schema Cache Loaded Successfully from ... " & strXSDPath, "verbose", LogHandle
+	ConsoleOutput "<INFO> Schema Cache Loaded Successfully from ... " & objXSDFile.url, "verbose", LogHandle
 	
 	Set LoadSchemaCache = ObjSchemaCache
 	
@@ -144,9 +151,13 @@ Public Function GetNamespaceURI (ObjXML)
 Dim strNsURI
 
 strNsURI = ObjXML.documentElement.getAttribute("targetNamespace")
-GetNamespaceURI = strNsURI
 
-'Set ObjXML = Nothing
+If strNsURI <> "" Then
+	GetNamespaceURI = strNsURI
+	ConsoleOutput "<INFO> Adding 'targetNamespace' " & strNsURI, "verbose", LogHandle
+Else
+
+End If
 
 End Function
 
@@ -155,6 +166,9 @@ End Function
 Public Function ValidateXML (ObjXMLDoc, ObjXSDDoc)
 
 Set ObjXMLDoc.Schemas = ObjXSDDoc
+
+ConsoleOutput "", "verbose", LogHandle
+ConsoleOutput vbTab & "******************" & vbTab & "<STARTING VALIDATION> " & vbTab & " ******************" & vbCrLf , "verbose", LogHandle
 
 If ObjXMLDoc.readystate = 4 Then
 	Set ObjXParseErr = ObjXMLDoc.validate()
@@ -177,27 +191,29 @@ Select Case ObjParseErr.errorCode
 		ConsoleOutput strResult, "verbose", LogHandle
 		ParseError = True
 	Case Else
-	   If Not (ObjParseErr.AllErrors Is Nothing) Then
+	   If (ObjParseErr.AllErrors.length > 1) Then
+	      ConsoleOutput "<ERROR> VALIDATION FAILED WITH MULTIPLE ERRORS !" & vbCrLf, "verbose", LogHandle
 	      For Each ErrorItem In ObjParseErr.AllErrors
-			strResult = vbCrLf & "<ERROR> VALIDATION FAILED !" & _
-			vbCrLf & ErrorItem.reason & vbCr & ErrorItem.errorXPath & vbCr & _
+			strResult = "[" & ErrFound+1 & "]" & " ERROR REASON :" & _
+			vbCrLf & "    ------------" & vbCrLf & ErrorItem.reason & vbCrLf & _
 			"Error Code: " & ErrorItem.errorCode & ", Line: " & _
 							 ErrorItem.Line & ", Character: " & _		
 							 ErrorItem.linepos & ", Source: " & _
-							 Chr(34) & ErrorItem.srcText & _
-							 Chr(34) & " - " & Now & vbCrLf
+							 Chr(34) & ErrorItem.srcText & vbCrLf & vbCrLf & _
+							 "XPath Value : " & vbCrLf & ErrorItem.errorXPath & vbCrLf 
 	      'ConsoleOutput ObjXMLDoc.url
 	      ConsoleOutput strResult, "verbose", LogHandle
 	     ErrFound = ErrFound + 1
 	      Next
 	   Else
-			strResult = vbCrLf & "<ERROR> VALIDATION FAILED !" & _
-			vbCrLf & ObjParseErr.reason & vbCr & ObjParseErr.errorXPath & vbCr & _
+			ConsoleOutput "<ERROR> VALIDATION FAILED WITH A SINGLE ERROR !" & vbCrLf, "verbose", LogHandle
+			strResult = " ERROR REASON :" & _
+			vbCrLf & " ------------" & vbCrLf & ObjParseErr.reason & vbCrLf & _
 			"Error Code: " & ObjParseErr.errorCode & ", Line: " & _
 							 ObjParseErr.Line & ", Character: " & _		
 							 ObjParseErr.linepos & ", Source: " & _
-							 Chr(34) & ObjParseErr.srcText & _
-							 Chr(34) & " - " & Now & vbCrLf
+							 Chr(34) & ObjParseErr.srcText & vbCrLf & vbCrLf & _
+							 "XPath Value : " & vbCrLf & ObjParseErr.errorXPath & vbCrLf 
 	      	ConsoleOutput strResult, "verbose", LogHandle
 	      	ErrFound = ErrFound + 1
 	   End If
