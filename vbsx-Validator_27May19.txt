@@ -1,0 +1,320 @@
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+ERROR! VALIDATION FAILED 
+'a' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'a' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:13:08
+
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+<ERROR> VALIDATION FAILED !
+'a' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'a' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:14:58
+
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+INFO! XML SCHEMA VALIDATION: SUCCESS ! 
+file:///E:/PROGRAMMING/XMLs/XMLDOM-PROJECTS/QTP-XMLUtilProject/Pain006.xml
+
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:18:33
+
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:18:33
+
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:20:30
+
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:20:30
+
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:21:48
+
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:21:48
+
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:23:25
+
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:23:32
+
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:33:27
+
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:33:28
+
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:34:00
+
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:34:01
+
+PROVIDE FULL PATH TO XML FILE (.xml) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Pain006.xml
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+
+PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? 
+
+<INFO> Loading XML with First-Level XMLDOM Properties
+<INFO> File Loaded Successfully ...E:\PROGRAMMING\XMLs\XMLDOM-PROJECTS\QTP-XMLUtilProject\Voca_pain.006.001.01.xsd
+
+<INFO> Configuring Second-Level XMLDOM Properties
+<INFO> Setting Up XML Selection Language Property ... XPath
+<INFO> Setting full parsing via MultipleErrorMessages Property
+<INFO> Setting 'resolve externals' to false (disabled)
+<INFO> Second-Level XMLDOM Properties configured successfully ..! 
+INFO! Schema Cache Loaded Successfully from ... 
+
+<ERROR> VALIDATION FAILED !
+'A' violates pattern constraint of '[0-9]{1,15}'.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}NbOfTxs' with value 'A' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="NbOfTxs" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897687, Line: 0, Character: 0, Source: "" - 27/05/2019 13:36:46
+
+
+<ERROR> VALIDATION FAILED !
+Error parsing 'B' as decimal datatype.
+The element '{urn:iso:std:iso:20022:tech:xsd:pain.006.001.01}CtrlSum' with value 'B' failed to parse.
+/*[local-name()="Document" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"]/*[local-name()="pain.006.001.01" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="GrpHdr" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]/*[local-name()="CtrlSum" and namespace-uri()="urn:iso:std:iso:20022:tech:xsd:pain.006.001.01"][1]Error Code: -1072897535, Line: 0, Character: 0, Source: "" - 27/05/2019 13:36:46
+
