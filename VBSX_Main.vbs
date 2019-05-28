@@ -11,7 +11,6 @@
 '# 
 '# 
 '# 
-'# 
 '#
 '# PLATFORM: Win7/8/Server | PRE-REQ: Script/Admin Privilege
 '# LAST UPDATED: Wed, 25 May 2019 | AUTHOR: Tushar Sharma
@@ -29,26 +28,36 @@
 
 Dim LogHandle
 
-ShowWelcomeBox()
-ShowMode ("nomode")
-strOpsMode = SelectMode()
-ShowMode (strOpsMode)
-Set LogHandle = CreateLogWriter()
-
-If ValidateInput(strOpsMode) Then
-	Select Case strOpsMode
-		Case "1"
-			Call SingleFileValidation()
-		Case "2"
-			Call BulkFileValidation()
-	End Select
-Else 
-	ConsoleOutput "INVALID CHOICE!", "verbose", LogHandle
-End If
+Call StartVBSXMain()
 
 
 
-Call ExitApp()
+Sub StartVBSXMain()
+
+	ShowWelcomeBox()
+	ShowMode ("nomode")
+	strOpsMode = SelectMode()
+	ShowMode (strOpsMode)
+	
+	If Not(IsObject(LogHandle)) Then
+		Set LogHandle = CreateLogWriter()
+	End If
+	
+	If ValidateInput(strOpsMode) Then
+		Select Case strOpsMode
+			Case "1"
+				Call SingleFileValidation()
+			Case "2"
+				Call BulkFileValidation()
+		End Select
+	Else 
+		ConsoleOutput "INVALID CHOICE!", "verbose", LogHandle
+	End If
+	
+	Call ExitApp()
+
+End Sub
+
 
 '###########################################################################
 
@@ -99,8 +108,12 @@ Set ObjXML = CreateObject ("MSXML2.DOMDocument.6.0")
 	ObjXML.Load (strXmlPath)
 		
 	If ObjXML.ParseError.errorCode <> 0 Then
-		Call ParseError (ObjXML.parseError, ObjXML)
-		Set LoadXML = False
+		Call ParseLoadErrors (ObjXML.parseError)
+		If IsReloadExit("") Then
+			Call StartVBSXMain()
+		Else
+			ExitApp()
+		End If
 	Else
 		ConsoleOutput "<INFO> Configuring Second-Level XMLDOM Properties", "verbose", LogHandle
 		'ConsoleOutput "<INFO> Setting Up XML Namespace Property ...", "verbose", LogHandle
@@ -170,15 +183,40 @@ ConsoleOutput vbTab & "******************" & vbTab & "<STARTING VALIDATION> " & 
 
 If ObjXMLDoc.readystate = 4 Then
 	Set ObjXParseErr = ObjXMLDoc.validate()
-	Call ParseError (ObjXParseErr, ObjXMLDoc)
+	Call ParseValidationError (ObjXParseErr, ObjXMLDoc)
 End If
 
 End Function
 
 '###########################################################################
 
+' This ParseError property is for errors and warnings during 'Load'method.
+' Applies to IXMLDOMParseError interface.
 
-Public Function ParseError (ByVal ObjParseErr, ObjXMLDoc)
+Public Function ParseLoadErrors (ByVal ObjParseErr)
+
+Dim strResult
+
+strResult = vbCrLf & "<ERROR> INVALID XML! FAILED WELL-FORMED (STRUCTURE) CHECK ! " & _
+vbCrLf & ObjParseErr.reason & vbCr & _
+"Error Code: " & ObjParseErr.errorCode & ", Line: " & _
+				 ObjParseErr.Line & ", Character: " & _		
+				 ObjParseErr.linepos & ", Source: " & _
+				 Chr(34) & ObjParseErr.srcText & _
+				 Chr(34) & " - " & vbCrLf & _
+				 vbCrLf & "CORRECT THE FILE BEFORE CONTINUING XSD VALIDATION !" & vbCrLf 
+
+ParseLoadErrors = False
+ConsoleOutput strResult, "verbose", LogHandle
+
+End Function
+
+'###########################################################################
+
+' The .AllErrors contains errors and warnings found DURING validation. Not valid for Load errors.
+' Applies to IXMLDOMParseError2 interface which extends the IXMLDOMParseError interface
+
+Public Function ParseValidationError (ByVal ObjParseErr, ObjXMLDoc)
 Dim strResult, ErrFound
 ErrFound = 0
 
@@ -189,7 +227,7 @@ Select Case ObjParseErr.errorCode
 		ConsoleOutput strResult, "verbose", LogHandle
 		ParseError = True
 	Case Else
-	   If (ObjParseErr.AllErrors.length > 1) Then
+	   If (ObjParseErr.AllErrors.length > 1) Then	'.AllErrors contains errors and warnings found DURING validation. Not valid property for Load errors
 	      ConsoleOutput "<ERROR> VALIDATION FAILED WITH MULTIPLE ERRORS !" & vbCrLf, "verbose", LogHandle
 	      For Each ErrorItem In ObjParseErr.AllErrors
 			strResult = "[" & ErrFound+1 & "]" & " ERROR REASON :" & _
@@ -199,7 +237,7 @@ Select Case ObjParseErr.errorCode
 							 ErrorItem.linepos & ", Source: " & _
 							 Chr(34) & ErrorItem.srcText & vbCrLf & vbCrLf & _
 							 "XPath Value : " & vbCrLf & ErrorItem.errorXPath & vbCrLf 
-	      'ConsoleOutput ObjXMLDoc.url
+	      ConsoleOutput ObjXMLDoc.url
 	      ConsoleOutput strResult, "verbose", LogHandle
 	     ErrFound = ErrFound + 1
 	      Next
@@ -219,7 +257,7 @@ Select Case ObjParseErr.errorCode
 End Select
 
 If ErrFound > 0 Then
-	ParseError = False
+	ParseValidationError = False
 End If
 
 End Function
@@ -278,13 +316,23 @@ Function ValidateInput (strArgsIn)
 
 Dim strValidInput, strArg, strFound
 strFound = False
-strValidInput = Array("1","2")
+strValidNumIn = Array("1","2")
+strValidStrIn = Array("Y","N","YES","NO")
 
-	For Each strArg In strValidInput
-		If strArg = strArgsIn Then
+If IsNumeric(strArgsIn) Then
+	For Each strArg In strValidNumIn
+		If (StrComp(strArg, strArgsIn) = 0) Then
 			strFound = True
 		End If
 	Next
+Else
+	For Each strArg In strValidStrIn
+		If (StrComp(UCase(strArg), strArgsIn) = 0) Then
+			strFound = True
+		End If
+	Next
+End If
+	
 	
 	If Not(strFound) Then
 		ValidateInput = False
@@ -296,20 +344,38 @@ End Function
 
 '###########################################################################
 
-Function IsDocReady (ObjXML)
-
+Function IsReloadExit (ObjXML)
 IsWait = True
 
-Do While Not (ObjXML.readystate = 4)
-	ConsoleOutput "Working on large size document, do you wish to continue (y/n)?", "nolog", LogHandle
-	strResponse = UCase(ConsoleInput())
-	If (strResponse = "N") Or (strResponse = "NO") Then
-		IsWait = False
-		Exit Do
-	Else 
-		WScript.Sleep(5000)
-	End If
-Loop 
+If IsObject(ObjXML) Then
+	Do While Not (ObjXML.readystate = 4)
+		ConsoleOutput "Working on large size document, do you wish to continue (y/n)?", "nolog", LogHandle
+		strResponse = UCase(ConsoleInput())
+		If (strResponse = "N") Or (strResponse = "NO") Then
+			IsWait = False
+			Exit Do
+		Else 
+			WScript.Sleep(5000)
+		End If
+	Loop 
+End If
+
+ConsoleOutput "Re-load the program or Exit (y=Reload / n=Exit)?", "nolog", LogHandle
+strResponse = UCase(ConsoleInput())
+
+If ValidateInput(strResponse) Then
+	Select Case strResponse
+	    Case "Y"
+	    	IsReloadExit = True
+	    Case "N"
+	    	IsReloadExit = False
+	End Select
+Else
+	ConsoleOutput "INVALID CHOICE!", "verbose", LogHandle
+End If
+
+
+
 
 If Not(IsWait) Then
 	Call ExitApp()
