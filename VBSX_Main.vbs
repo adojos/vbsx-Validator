@@ -26,7 +26,7 @@
 
 '###########################################################################
 
-Dim LogHandle
+Dim LogHandle, strLogPath
 
 Call StartVBSXMain()
 
@@ -62,26 +62,78 @@ End Sub
 '###########################################################################
 
 Public Sub SingleFileValidation()
-Dim strFilePath, ObjSchemaCache
 
-	ConsoleOutput "PROVIDE FULL PATH TO XML FILE (.xml) ? ", "verbose", LogHandle
+Dim ObjSchemaCache, objXMLFile, objXSDFile
+Dim strFilePath
+
+
+	ConsoleOutput "PROVIDE FULL PATH TO XML FILE (e.g. C:\MyFile.xml) ? ", "verbose", LogHandle
 	strFilePath = ConsoleInput()
 	
 	Set objXMLFile = LoadXML(strFilePath)
 	ConsoleOutput "", "verbose", LogHandle
 	
-	ConsoleOutput "PROVIDE FULL PATH TO SCHEMA FILE (.xsd) ? ", "verbose", LogHandle
+	ConsoleOutput "PROVIDE FULL PATH TO SCHEMA FILE (e.g. C:\MySchema.xsd) ? ", "verbose", LogHandle
 	strFilePath = ConsoleInput()	
 	Set objXSDFile = LoadXML(strFilePath)
 	
 	Set ObjSchemaCache = LoadSchemaCache(objXSDFile)	
 	Call ValidateXML (objXMLFile, ObjSchemaCache)
 	
+	ConsoleOutput "Log File : " & strLogPath, "verbose", LogHandle
+	
+	If IsReloadExit("") Then
+		Call StartVBSXMain()
+	Else
+		ExitApp()
+	End If
+	
 	Set objXMLFile = Nothing
 	Set objXSDFile = Nothing
 
 End Sub	
 
+'###########################################################################
+
+Public Sub BulkFileValidation()
+
+Dim ObjSchemaCache, objXMLFile, objXSDFile
+Dim strFilePath, strFolderPath, strFileName
+
+	ConsoleOutput "PROVIDE FULL PATH TO SCHEMA FILE (e.g. C:\MySchema.xsd) ? ", "verbose", LogHandle
+	strFilePath = ConsoleInput()	
+	Set objXSDFile = LoadXML(strFilePath)
+	Set ObjSchemaCache = LoadSchemaCache(objXSDFile)	
+
+	ConsoleOutput "", "verbose", LogHandle
+	
+	ConsoleOutput "PROVIDE PATH TO FOLDER CONTAINING XML FILES (e.g. C:\MyXMLFiles) ? ", "verbose", LogHandle
+	strFolderPath = ConsoleInput()
+
+	arrFileList = GetFolderFiles(strFolderPath)
+	If IsArray(arrFileList) Then
+		For Each strFileName In arrFileList
+			Set objXMLFile = LoadXML(strFileName)
+			Call ValidateXML (objXMLFile, ObjSchemaCache)
+			Next
+	Else
+		If IsReloadExit("") Then
+			Call StartVBSXMain()
+		Else
+			ExitApp()
+		End If
+	End If
+	
+	If IsReloadExit("") Then
+		Call StartVBSXMain()
+	Else
+		ExitApp()
+	End If
+	
+	Set objXMLFile = Nothing
+	Set objXSDFile = Nothing
+
+End Sub	
 
 '###########################################################################
 
@@ -167,7 +219,9 @@ If strNsURI <> "" Then
 	GetNamespaceURI = strNsURI
 	ConsoleOutput "<INFO> Adding 'targetNamespace' " & strNsURI, "verbose", LogHandle
 Else
-
+	strNsURI = ObjXML.namespaceURI
+	GetNamespaceURI = strNsURI
+	ConsoleOutput "<INFO> Adding 'targetNamespace' " & strNsURI, "verbose", LogHandle
 End If
 
 End Function
@@ -185,6 +239,10 @@ If ObjXMLDoc.readystate = 4 Then
 	Set ObjXParseErr = ObjXMLDoc.validate()
 	Call ParseValidationError (ObjXParseErr, ObjXMLDoc)
 End If
+
+ConsoleOutput "", "verbose", LogHandle
+ConsoleOutput vbTab & "******************" & vbTab & "<COMPLETED VALIDATION> " & vbTab & " ******************" & vbCrLf , "verbose", LogHandle
+ConsoleOutput "", "verbose", LogHandle
 
 End Function
 
@@ -206,8 +264,10 @@ vbCrLf & ObjParseErr.reason & vbCr & _
 				 Chr(34) & " - " & vbCrLf & _
 				 vbCrLf & "CORRECT THE FILE BEFORE CONTINUING XSD VALIDATION !" & vbCrLf 
 
-ParseLoadErrors = False
+ConsoleOutput "Log File : " & strLogPath, "verbose", LogHandle
+ConsoleOutput "", "verbose", LogHandle
 ConsoleOutput strResult, "verbose", LogHandle
+ParseLoadErrors = False
 
 End Function
 
@@ -237,7 +297,7 @@ Select Case ObjParseErr.errorCode
 							 ErrorItem.linepos & ", Source: " & _
 							 Chr(34) & ErrorItem.srcText & vbCrLf & vbCrLf & _
 							 "XPath Value : " & vbCrLf & ErrorItem.errorXPath & vbCrLf 
-	      ConsoleOutput ObjXMLDoc.url
+	      'ConsoleOutput ObjXMLDoc.url
 	      ConsoleOutput strResult, "verbose", LogHandle
 	     ErrFound = ErrFound + 1
 	      Next
@@ -298,6 +358,7 @@ strFileName = "vbsx-Validator" & "_" & Day(Date) & MonthName(Month(Date),True) &
 
 Set ObjFSO = CreateObject("Scripting.FileSystemObject")
 Set ObjTextFile = ObjFSO.OpenTextFile(sCurrPath & strFileName, 8, True)
+strLogPath = sCurrPath & strFileName
 
 Set CreateLogWriter = ObjTextFile 
 
@@ -323,12 +384,14 @@ If IsNumeric(strArgsIn) Then
 	For Each strArg In strValidNumIn
 		If (StrComp(strArg, strArgsIn) = 0) Then
 			strFound = True
+			Exit For
 		End If
 	Next
 Else
 	For Each strArg In strValidStrIn
 		If (StrComp(UCase(strArg), strArgsIn) = 0) Then
 			strFound = True
+			Exit For
 		End If
 	Next
 End If
@@ -360,7 +423,8 @@ If IsObject(ObjXML) Then
 	Loop 
 End If
 
-ConsoleOutput "Re-load the program or Exit (y=Reload / n=Exit)?", "nolog", LogHandle
+ConsoleOutput "", "nolog", LogHandle
+ConsoleOutput "RE-LOAD THE PROGRAM OR EXIT (y=Reload / n=Exit) ?", "nolog", LogHandle
 strResponse = UCase(ConsoleInput())
 
 If ValidateInput(strResponse) Then
@@ -374,15 +438,70 @@ Else
 	ConsoleOutput "INVALID CHOICE!", "verbose", LogHandle
 End If
 
-
-
-
 If Not(IsWait) Then
 	Call ExitApp()
 End If
 
 End Function
 
+'###########################################################################
+
+Function GetFolderFiles(strFolderPath)
+
+Dim ObjFSO, ObjFolder, ObjFiles, strCurPath
+Dim iCount, arrObjFiles()
+
+iCount = 0
+
+Set ObjFSO = CreateObject("Scripting.FileSystemObject")
+
+If (ObjFSO.FolderExists(strFolderPath)) Then
+	Set ObjFolder = ObjFSO.GetFolder(strFolderPath)
+	strCurPath = ObjFolder.Path
+	Set ObjFiles = ObjFolder.Files
+	If ObjFiles.Count > 0 Then
+		For Each strFile In ObjFiles
+		
+'		strFileName = fso.GetAbsolutePathName(File)
+'         strFileExt = Right(strFileName,4)
+'         Select Case strFileExt
+           ' Process all known XML file types.
+'           Case ".xml" ValidateAsXmlFile
+'           Case ".xsl" ValidateAsXmlFile
+'           Case ".xsd" ValidateAsXmlFile
+'           Case Else
+
+		
+			ReDim Preserve arrObjFiles (iCount)
+			arrObjFiles(iCount) = strFile.Path
+			iCount = iCount + 1
+			ConsoleOutput "<INFO> Found File " & strFile.Path, "verbose", LogHandle
+		Next
+	GetFolderFiles = arrObjFiles
+	Else 
+		ConsoleOutput "<ERROR> NO FILES FOUND IN THE SPECIFIED FOLDER !", "verbose", LogHandle
+		GetFolderFiles = False
+		If IsReloadExit("") Then
+			Call StartVBSXMain()
+		Else
+			ExitApp()
+		End If		
+	End If
+Else
+	ConsoleOutput "<ERROR> FOLDER NOT FOUND !", "nolog", LogHandle
+	GetFolderFiles = False
+	If IsReloadExit("") Then
+		Call StartVBSXMain()
+	Else
+		ExitApp()
+	End If
+
+End If
+
+
+
+	
+End Function
 
 '###########################################################################
 'This Function sets input values for operating modes 
@@ -452,34 +571,6 @@ WScript.StdOut.WriteBlankLines(2)
 End Sub
 
 
-'###########################################################################
-
-Public Sub BulkFileValidation()
-Dim strFilePath
-Dim sFormatChoice
-
-ShowWelcomeBox("valonly")
-ShowFileChoices()
-sFormatChoice = ConsoleInput()
-
-If CreateWorkingDir() Then
-	Call ConsoleOutput ("PROVIDE FULL PATH TO TEMPLATE XML FILE (.xml) ? ", "verbose", LogHandle)
-	strFilePath = ConsoleInput()
-	Set MyXMLFile = LoadXML(strFilePath)
-	
-	Call ConsoleOutput ("PROVIDE FULL PATH TO THE SCHEMA FILE (.xsd) ? ", "verbose", LogHandle)
-	Set MyXSDFile = LoadXSD(ConsoleInput(),GetNamespaceURI(MyXMLFile))
-	
-	ValidateXML MyXMLFile, MyXSDFile
-	Set MyXSDFile = Nothing
-	
-	'Call ConsoleOutput ("SPECIFY NUMBER OF TRANSACTIONS", "verbose")
-	'Call GenerateFile (sFormatChoice, MyXMLFile, ConsoleInput)
-	'Call SaveXML (MyXMLFile)
-	Set MyXMLFile = Nothing
-End If
-
-End Sub
 
 '###########################################################################
 'This function calls Readme.txt
