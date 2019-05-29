@@ -8,29 +8,31 @@
 '# could be utilized for some specific XML related operations and automation.
 '# 
 '# NOTES:
-'# 
-'# 
-'# 
-'#
+'# Dependency on MSXML6. Supports full multiple error parsing with offline log file output.
+'# Also supports Batch (Multiple XML Files) Validation against a single specified XSD
+'# The Parser does not resolve externals. It does not evaluate or resolve the schemaLocation 
+'# or attributes specified in DocumentRoot. The parser validates strictly against the 
+'# supplied XSD only without auto-resolving schemaLocation. The parser needs 
+'# Namespace (targetNamespace) which is currently extracted from the supplied XSD.
+
 '# PLATFORM: Win7/8/Server | PRE-REQ: Script/Admin Privilege
-'# LAST UPDATED: Wed, 25 May 2019 | AUTHOR: Tushar Sharma
+'# LAST UPDATED: May 2019 | AUTHOR: Tushar Sharma
 '##################################################################################################
 
 
 
-'If WScript.Arguments.length = 0 Then
-'   Set objShell = CreateObject("Shell.Application")
-'   objShell.ShellExecute "cscript.exe", Chr(34) & WScript.ScriptFullName & Chr(34) & " uac", "", "runas", 3
-'      WScript.Quit
-'End If  
-
-'###########################################################################
+If WScript.Arguments.length = 0 Then
+   Set objShell = CreateObject("Shell.Application")
+   objShell.ShellExecute "cscript.exe", Chr(34) & WScript.ScriptFullName & Chr(34) & " uac", "", "runas", 3
+      WScript.Quit
+End If  
 
 Dim LogHandle, strLogPath
 
 Call StartVBSXMain()
 
 
+'###########################################################################
 
 Sub StartVBSXMain()
 
@@ -52,6 +54,11 @@ Sub StartVBSXMain()
 		End Select
 	Else 
 		ConsoleOutput "INVALID CHOICE!", "verbose", LogHandle
+		If IsReloadExit("") Then
+			Call StartVBSXMain()
+		Else
+			ExitApp()
+		End If
 	End If
 	
 	Call ExitApp()
@@ -98,7 +105,7 @@ End Sub
 Public Sub BulkFileValidation()
 
 Dim ObjSchemaCache, objXMLFile, objXSDFile
-Dim strFilePath, strFolderPath, strFileName
+Dim strFilePath, strFolderPath, strFileName, arrFileList
 
 	ConsoleOutput "PROVIDE FULL PATH TO SCHEMA FILE (e.g. C:\MySchema.xsd) ? ", "verbose", LogHandle
 	strFilePath = ConsoleInput()	
@@ -460,24 +467,21 @@ If (ObjFSO.FolderExists(strFolderPath)) Then
 	strCurPath = ObjFolder.Path
 	Set ObjFiles = ObjFolder.Files
 	If ObjFiles.Count > 0 Then
+		ConsoleOutput "", "verbose", LogHandle
+		ConsoleOutput "<INFO> Loading Files from folder" & strCurPath, "verbose", LogHandle
 		For Each strFile In ObjFiles
-		
-'		strFileName = fso.GetAbsolutePathName(File)
-'         strFileExt = Right(strFileName,4)
-'         Select Case strFileExt
-           ' Process all known XML file types.
-'           Case ".xml" ValidateAsXmlFile
-'           Case ".xsl" ValidateAsXmlFile
-'           Case ".xsd" ValidateAsXmlFile
-'           Case Else
-
-		
-			ReDim Preserve arrObjFiles (iCount)
-			arrObjFiles(iCount) = strFile.Path
-			iCount = iCount + 1
-			ConsoleOutput "<INFO> Found File " & strFile.Path, "verbose", LogHandle
+			If (Right(strFile.Path,4) = ".xml") Then
+				ConsoleOutput "<INFO> Found File " & strFile.Path, "verbose", LogHandle
+				ReDim Preserve arrObjFiles (iCount)
+				arrObjFiles(iCount) = strFile.Path
+				iCount = iCount + 1
+			End If
 		Next
-	GetFolderFiles = arrObjFiles
+	If IsArray(arrObjFiles) Then
+		GetFolderFiles = arrObjFiles
+	Else
+		GetFolderFiles = False
+	End If	
 	Else 
 		ConsoleOutput "<ERROR> NO FILES FOUND IN THE SPECIFIED FOLDER !", "verbose", LogHandle
 		GetFolderFiles = False
@@ -551,26 +555,25 @@ End Sub
 
 '###########################################################################
 
-' This function show information about VBSX_VALIDATOR
 Public Sub ShowWelcomeBox()
 
 WScript.StdOut.WriteBlankLines(1)
-WScript.StdOut.Write "    "
-WScript.StdOut.Write "**************************************************"
-WScript.StdOut.WriteBlankLines(2)
-WScript.StdOut.WriteLine VBTab & VBTab & "  " & "VBSX_VALIDATOR version 1.0.2"
+WScript.StdOut.WriteLine "      " & "****************************************************************"
+WScript.StdOut.WriteLine "      " & "----------------------------------------------------------------"
 WScript.StdOut.WriteBlankLines(1)
-WScript.StdOut.WriteLine VBTab & VBTab & "     " & "BULK XML FILE VALIDATOR"
-WScript.StdOut.WriteLine VBTab & vbTab & "   " & "Last Updated: November 2013"
-WScript.StdOut.WriteLine VBTab & vbTab & "Tushar Sharma | www.testoxide.com"
+WScript.StdOut.WriteLine VBTab & vbTab & VBTab & "   " & "VBSX_VALIDATOR version 1.0.2"
 WScript.StdOut.WriteBlankLines(1)
-WScript.StdOut.Write "    "
-WScript.StdOut.Write "**************************************************"
+WScript.StdOut.WriteLine VBTab & " Free and Fast XML/XSD Validator. Supports Bulk Validation"
+WScript.StdOut.WriteLine vbTab & "  " & "Full XML Error Parsing (MSXML6) with Offline Log Output"
+WScript.StdOut.WriteLine VBTab & "    " & "Platform: Win7/8 | Pre-Req: Script/Admin Privilege"
+WScript.StdOut.WriteBlankLines(1)
+WScript.StdOut.WriteLine VBTab & "   " & "Updated: May 2019 | Tushar Sharma | www.testoxide.com"
+WScript.StdOut.WriteBlankLines(1)
+WScript.StdOut.WriteLine "      " & "****************************************************************"
+WScript.StdOut.WriteLine "      " & "----------------------------------------------------------------"
 WScript.StdOut.WriteBlankLines(2)
 
 End Sub
-
-
 
 '###########################################################################
 'This function calls Readme.txt
