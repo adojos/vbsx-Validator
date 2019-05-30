@@ -24,7 +24,7 @@ Require admin privileges / script execution privileges (elevated UAC prompt) on 
 
 * The Parser has been designed _not to resolve externals_. It does not evaluate or resolve the schemaLocation or attributes specified in DocumentRoot. The reason is that most of the time schemaLocation is not always valid or resolvable. Hence this design avoids non-schema related errors.
 
-* The parser validates _strictly against the supplied XSD only without auto-resolving schemaLocation_ or other nameSpace attributes.
+* The parser validates _strictly against the supplied XSD (schema definition) only without auto-resolving schemaLocation_ or other nameSpace attributes.
 
 * The parser needs Namespace (targetNamespace) which is currently extracted from the supplied XSD.
 
