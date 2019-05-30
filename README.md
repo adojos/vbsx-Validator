@@ -28,7 +28,7 @@ Require admin privileges / script execution privileges (elevated UAC prompt) on 
 
 * The parser needs Namespace (targetNamespace) which is currently extracted from the supplied XSD.
 
-* The current version does not support inline schemas
+* The current version does not support XML files with inline schemas
 
 ### Built With
 
