@@ -1,5 +1,5 @@
 # vbsx-Validator
-Free script utility for XML/XSD validation. Fastest XML validation of large sized files (in-memory) without rendering overhead.
+Free script utility for XML/XSD validation. Fastest XML validation of 'large sized' files (in-memory) without rendering overhead.
 DOM Parser based XML / XSD validation built on MSXML6. Supports full (Multiple) error parsing of a given XML.
 
 Also supports Batch (Multiple XML Files) as a single operation. Generates verbose log file for all operations and output.
