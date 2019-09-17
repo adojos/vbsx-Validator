@@ -7,6 +7,7 @@ Also supports Batch (Multiple XML Files) as a single operation. Generates verbos
 Built on windows native technologies!
 This utility has no dependency on third party compiler / interpreters / engines (e.g. java, nodejs. .NET or other such runtimes).
 
+
 ### How To run
 
 Simply double-click the main script file named 'VBSX_Main.vbs' to launch the utility. This will launch the command line interface.
@@ -14,13 +15,15 @@ Please note that you might get UAC prompt if UAC is enabled on your windows.
 
 **Note :** _Drag and Drop may work with UAC disabled._
 
-_Refer [Wiki](https://github.com/testoxide/vbsx-Validator/wiki) for usage tips, screenshots and video demo_
+_Refer [Wiki](https://github.com/testoxide/vbsx-Validator/wiki) for usage tips, screenshots and [video demo](https://www.youtube.com/watch?v=bjuY4CBv5iM)_
+
 
 ### Prerequisites
 
 Win 7 / 8 / Server.
 
 Require admin privileges / script execution privileges (elevated UAC prompt) on your windows system.
+
 
 ### Technical Notes (Design)
 
@@ -32,11 +35,13 @@ Require admin privileges / script execution privileges (elevated UAC prompt) on 
 
 * The current version does not support XML files with inline schemas
 
+
 ### Built With
 
 * [VBScript](https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/)
 * [WScript](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc738350(v=ws.10)) 
 * [MSXML6](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ms763742(v%3dvs.85))
+
 
 ### Known Issues / Bugs
 
