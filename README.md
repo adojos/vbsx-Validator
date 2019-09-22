@@ -1,3 +1,7 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/testoxide/vbsx-Validator)
+![GitHub repo size](https://img.shields.io/github/repo-size/testoxide/vbsx-Validator)
+
 # vbsx-Validator
 Free script utility for XML/XSD validation. Fastest XML validation of 'large sized' files (in-memory) without rendering overhead.
 DOM Parser based XML / XSD validation built on MSXML6. Supports full (Multiple) error parsing of a given XML.
