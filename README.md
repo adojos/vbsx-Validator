@@ -3,10 +3,10 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/testoxide/vbsx-Validator)
 
 # vbsx-Validator
-Free script utility for XML/XSD validation. Fastest XML validation of 'large sized' files (in-memory) without rendering overhead.
+Free script utility for simple XML/XSD validation (currently supports only single XSD). Fastest XML validation of 'large sized' files (in-memory) without rendering overhead.
 DOM Parser based XML / XSD validation built on MSXML6. Supports full (Multiple) error parsing of a given XML.
 
-Also supports Batch (Multiple XML Files) as a single operation. Validate hundreds of XML against a given XSD as one batch operation. Generates verbose log file for all operations and output.
+Also supports Batch (Multiple XML Files) as a single operation. Validate hundreds of XML against a given XSD (single) as one batch operation. Generates verbose log file for all operations and output.
 
 No-frills, lightweight yet powerful! Built on windows native technologies!
 This utility has no dependency on third party compiler / interpreters / engines (e.g. java, nodejs. .NET or other such runtimes).
