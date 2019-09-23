@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.my.com/books" 
+            xmlns:cs="http://www.my.com/book"
+            elementFormDefault="qualified">
+                
+<xs:import namespace="http://www.my.com/book" 
+       schemaLocation="book.xsd"/>
+       
+    <xs:element name="books">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="cs:book"/>      
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

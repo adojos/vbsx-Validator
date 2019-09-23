@@ -468,7 +468,7 @@ If (ObjFSO.FolderExists(strFolderPath)) Then
 	Set ObjFiles = ObjFolder.Files
 	If ObjFiles.Count > 0 Then
 		ConsoleOutput "", "verbose", LogHandle
-		ConsoleOutput "<INFO> Loading Files from folder" & strCurPath, "verbose", LogHandle
+		ConsoleOutput "<INFO> Loading Files from folder " & strCurPath, "verbose", LogHandle
 		For Each strFile In ObjFiles
 			If (Right(strFile.Path,4) = ".xml") Then
 				ConsoleOutput "<INFO> Found File " & strFile.Path, "verbose", LogHandle
