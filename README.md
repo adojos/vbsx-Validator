@@ -24,7 +24,7 @@ Please note that you might get UAC prompt if UAC is enabled on your windows.
 
 **Note :** _Drag and Drop may work with UAC disabled._
 
-_Refer [Wiki](https://github.com/testoxide/vbsx-Validator/wiki) for usage tips, screenshots and [video demo](https://www.youtube.com/watch?v=bjuY4CBv5iM)_
+_Refer [Wiki](https://github.com/testoxide/vbsx-Validator/wiki) for usage tips, screenshots and [video demo](https://github.com/testoxide/vbsx-Validator/wiki/Video-Demo-&-Overview)_
 
 
 ### Prerequisites
