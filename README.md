@@ -31,6 +31,8 @@ _Refer [Wiki](https://github.com/testoxide/vbsx-Validator/wiki) for usage tips, 
 
 Win 7 / 8 / Server.
 
+MSXML6 Official Download [here](https://www.microsoft.com/en-us/download/details.aspx?id=3988)
+
 Require admin privileges / script execution privileges (elevated UAC prompt) on your windows system.
 
 
