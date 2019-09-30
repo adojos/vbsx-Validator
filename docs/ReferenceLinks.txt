@@ -1,0 +1,26 @@
+
+MSXML Reference
+
+https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ms756003(v%3Dvs.85)
+
+
+Download MSXML
+
+https://www.microsoft.com/en-us/download/details.aspx?id=3988
+
+
+Validation Examples
+
+https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ms757071%28v%3dvs.85%29
+
+
+Different Validation Types Explained
+
+https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ms757071%28v%3dvs.85%29
+
+https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ms762616%28v%3dvs.85%29
+
+
+Referencing XSD Schemas in Documents
+
+https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ms757863(v=vs.85)

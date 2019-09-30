@@ -27,7 +27,15 @@ If WScript.Arguments.length = 0 Then
       WScript.Quit
 End If  
 
-Dim LogHandle, strLogPath
+'###########################################################################
+
+Dim LogHandle, strLogPath, strSchemaCacheFail
+Const strInvalid = "invalid"
+Const strFile = "file"
+Const strFolder = "folder"
+Const strFileExtXSD = ".xsd"
+Const strFileExtXML = ".xml"
+
 
 Call StartVBSXMain()
 
@@ -70,23 +78,44 @@ End Sub
 
 Public Sub SingleFileValidation()
 
-Dim ObjSchemaCache, objXMLFile, objXSDFile
+Dim ObjSchemaCache, objXMLFile
 Dim strFilePath
-
-
+	
+	strSchemaCacheFail = False
 	ConsoleOutput "PROVIDE FULL PATH TO XML FILE (e.g. C:\MyFile.xml) ? ", "verbose", LogHandle
 	strFilePath = ConsoleInput()
 	
-	Set objXMLFile = LoadXML(strFilePath)
-	ConsoleOutput "", "verbose", LogHandle
+	If IsXMLXSD(strFilePath) = strFileExtXML Then
 	
-	ConsoleOutput "PROVIDE FULL PATH TO SCHEMA FILE (e.g. C:\MySchema.xsd) ? ", "verbose", LogHandle
-	strFilePath = ConsoleInput()	
-	Set objXSDFile = LoadXML(strFilePath)
+		Set objXMLFile = LoadXML(strFilePath)
+		ConsoleOutput "", "verbose", LogHandle
+		
+		Set ObjSchemaCache = GetSchemaCacheForXSDs()
+		
+		If Not(strSchemaCacheFail) Then
+			Call ValidateXML (objXMLFile, ObjSchemaCache)
+		Else
+			ConsoleOutput "", "verbose", LogHandle
+			ConsoleOutput "<ERROR> NO SCHEMA FILE FOUND OR INVALID INPUT!", "verbose", LogHandle
+			ConsoleOutput "", "verbose", LogHandle
+			If IsReloadExit("") Then
+				Call StartVBSXMain()
+			Else
+				ExitApp()
+			End If
+		End If
+		
+	Else
+		ConsoleOutput "", "verbose", LogHandle
+		ConsoleOutput "<ERROR> INVALID FILE OR PATH! PLEASE TRY AGAIN ...", "verbose", LogHandle
+		If IsReloadExit("") Then
+			Call StartVBSXMain()
+		Else
+			ExitApp()
+		End If
 	
-	Set ObjSchemaCache = LoadSchemaCache(objXSDFile)	
-	Call ValidateXML (objXMLFile, ObjSchemaCache)
-	
+	End If 
+
 	ConsoleOutput "Log File : " & strLogPath, "verbose", LogHandle
 	
 	If IsReloadExit("") Then
@@ -96,7 +125,7 @@ Dim strFilePath
 	End If
 	
 	Set objXMLFile = Nothing
-	Set objXSDFile = Nothing
+	Set ObjSchemaCache = Nothing
 
 End Sub	
 
@@ -117,7 +146,7 @@ Dim strFilePath, strFolderPath, strFileName, arrFileList
 	ConsoleOutput "PROVIDE PATH TO FOLDER CONTAINING XML FILES (e.g. C:\MyXMLFiles) ? ", "verbose", LogHandle
 	strFolderPath = ConsoleInput()
 
-	arrFileList = GetFolderFiles(strFolderPath)
+	arrFileList = GetFolderFiles(strFolderPath, strFileExtXML)
 	If IsArray(arrFileList) Then
 		For Each strFileName In arrFileList
 			Set objXMLFile = LoadXML(strFileName)
@@ -193,12 +222,9 @@ End Function
 	
 '###########################################################################
 
-Public Function LoadSchemaCache (objXSDFile)
+Public Function LoadSchemaCache (objSchemaColl, objXSDFile)
 
-Dim ObjSchemaCache, strNsURI
-	
-	Set ObjSchemaCache = CreateObject("MSXML2.XMLSchemaCache.6.0")
-	ObjSchemaCache.validateOnload = False ' This method applies to only [Schema Cache] not (XSD or XML)
+Dim strNsURI
 	
 	ConsoleOutput "", "verbose", LogHandle
 	ConsoleOutput "<INFO> Creating Schema Cache Collection", "verbose", LogHandle
@@ -207,10 +233,10 @@ Dim ObjSchemaCache, strNsURI
 	strNsURI = GetNamespaceURI (objXSDFile)
 	
 	'Load XSD from the Path
-	ObjSchemaCache.Add strNsURI, objXSDFile
+	objSchemaColl.Add strNsURI, objXSDFile
 	ConsoleOutput "<INFO> Schema Cache Loaded Successfully from ... " & objXSDFile.url, "verbose", LogHandle
 	
-	Set LoadSchemaCache = ObjSchemaCache
+	Set LoadSchemaCache = objSchemaColl
 	
 End Function
 
@@ -354,6 +380,117 @@ End Select
 
 End Sub
 
+'###########################################################################
+
+
+Function GetSchemaCacheForXSDs()
+
+Dim strInput, iFound, strFileName, iInvalidCount
+Dim ObjSchemaCache , objXSDFile, arrXSDFiles
+
+Set ObjSchemaCache = CreateObject("MSXML2.XMLSchemaCache.6.0")
+'Indicates whether the schema will be compiled and validated when it is loaded into the schema cache
+ObjSchemaCache.validateOnload = False ' This method applies to only [Schema Cache] not (XSD or XML)
+
+ConsoleOutput "PROVIDE FULL PATH TO SCHEMA FILE/S OR FOLDER CONTAINING XSDs (e.g. C:\MySchema.xsd OR C:\SchemaFileFolder) ? ", "verbose", LogHandle
+strInput = ConsoleInput()
+
+iFound = 0
+iInvalidCount = 0
+Do	
+	Select Case IsFolderFile(strInput)
+		Case strFile
+			If (IsXMLXSD(strInput) = strFileExtXSD) Then
+				Set objXSDFile = LoadXML(strInput)
+				Set ObjSchemaCache = LoadSchemaCache(ObjSchemaCache, objXSDFile)
+				iFound = iFound + 1
+			Else 
+				strInput = strInvalid
+				iInvalidCount = iInvalidCount + 1
+				ConsoleOutput "", "verbose", LogHandle
+				ConsoleOutput "<ERROR> INVALID INPUT! SUPPLIED FILE IS NOT XSD ('.xsd'). PLEASE TRY AGAIN ...", "verbose", LogHandle
+			End If
+		Case strFolder
+			arrXSDFiles = GetFolderFiles(strInput, strFileExtXSD)
+			If IsArray(arrXSDFiles) Then
+				For Each strFileName In arrXSDFiles
+					Set objXSDFile = LoadXML(strFileName)
+					Set ObjSchemaCache = LoadSchemaCache(ObjSchemaCache, objXSDFile)
+					iFound = iFound + 1
+				Next
+			End If
+		Case strInvalid
+			strInput = strInvalid
+			iInvalidCount = iInvalidCount + 1
+			ConsoleOutput "", "verbose", LogHandle
+			ConsoleOutput "<ERROR> INVALID INPUT! PLEASE TRY AGAIN ...", "verbose", LogHandle
+	End Select
+	
+	If (iInvalidCount >= 3) Then
+		ConsoleOutput "", "verbose", LogHandle
+		ConsoleOutput "<ERROR> TOO MANY INVALID ATTEMPTS! EXIT OR RE-LOAD APPLICATION ...", "verbose", LogHandle
+		strInput = ""
+		Exit Do
+	Else 
+		ConsoleOutput "", "verbose", LogHandle
+		ConsoleOutput "PROVIDE MORE XSDs IF ASSOCIATED WITH XML ELSE JUST PRESS ENTER (e.g. C:\MySchema.xsd OR C:\SchemaFileFolder) ? ", "verbose", LogHandle
+		strInput = ConsoleInput()
+	End If
+	
+Loop While (strInput <> "")
+	
+	
+If iFound > 0 Then	
+	Set GetSchemaCacheForXSDs = ObjSchemaCache
+Else
+	Set GetSchemaCacheForXSDs = ObjSchemaCache
+	strSchemaCacheFail = True
+End If
+
+
+End Function
+
+'###########################################################################
+
+Function IsFolderFile(strPathInput)
+
+Set objFSO = CreateObject("Scripting.FileSystemObject") 
+
+If objFSO.FileExists(strPathInput) Then 
+    IsFolderFile = strFile
+ElseIf objFSO.FolderExists(strPathInput) Then
+	IsFolderFile = strFolder
+Else 
+	IsFolderFile = strInvalid
+End If
+
+End Function
+
+'###########################################################################
+
+Function IsXMLXSD(strFilePath)
+
+Dim objFSO, strFileExt
+
+Set objFSO = CreateObject("Scripting.FileSystemObject") 
+
+If IsFolderFile(strFilePath) = strFile Then
+	strFileExt = objFSO.GetFileName(strFilePath)
+	
+	Select Case Right(strFileExt,4)
+		Case ".xml"
+			IsXMLXSD = strFileExtXML	
+		Case ".xsd"
+			IsXMLXSD = strFileExtXSD
+		Case Else
+			IsXMLXSD = strInvalid
+	End Select
+
+Else
+	IsXMLXSD = strInvalid
+End If
+
+End Function
 
 '###########################################################################
 'This function sets the directory path of ReadMe.txt 
@@ -453,10 +590,10 @@ End Function
 
 '###########################################################################
 
-Function GetFolderFiles(strFolderPath)
+Function GetFolderFiles(strFolderPath,strFileExtType)
 
 Dim ObjFSO, ObjFolder, ObjFiles, strCurPath
-Dim iCount, arrObjFiles()
+Dim iCount, arrObjFiles(), strFile
 
 iCount = 0
 
@@ -470,18 +607,18 @@ If (ObjFSO.FolderExists(strFolderPath)) Then
 		ConsoleOutput "", "verbose", LogHandle
 		ConsoleOutput "<INFO> Loading Files from folder " & strCurPath, "verbose", LogHandle
 		For Each strFile In ObjFiles
-			If (Right(strFile.Path,4) = ".xml") Then
+			If (Right(strFile.Path,4) = strFileExtType) Then
 				ConsoleOutput "<INFO> Found File " & strFile.Path, "verbose", LogHandle
 				ReDim Preserve arrObjFiles (iCount)
 				arrObjFiles(iCount) = strFile.Path
 				iCount = iCount + 1
 			End If
 		Next
-	If IsArray(arrObjFiles) Then
-		GetFolderFiles = arrObjFiles
-	Else
-		GetFolderFiles = False
-	End If	
+		If IsArray(arrObjFiles) Then
+			GetFolderFiles = arrObjFiles
+		Else
+			GetFolderFiles = False
+		End If	
 	Else 
 		ConsoleOutput "<ERROR> NO FILES FOUND IN THE SPECIFIED FOLDER !", "verbose", LogHandle
 		GetFolderFiles = False
@@ -501,8 +638,6 @@ Else
 	End If
 
 End If
-
-
 
 	
 End Function

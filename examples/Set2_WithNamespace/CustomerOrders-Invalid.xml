@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>  
-<Root>  
+<Root xmlns="http://www.adventure-works.com" >  
   <Customers>  
     <Customer CustomerID="GREAL">  
       <CompanyName>Great Lakes Food Market</CompanyName>  
