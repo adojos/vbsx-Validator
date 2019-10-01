@@ -3,10 +3,10 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/testoxide/vbsx-Validator)
 
 # vbsx-Validator
-Free script utility for simple XML/XSD validation (currently supports only single XSD). Fastest XML validation of 'large sized' files (in-memory) without rendering overhead.
-DOM Parser based XML / XSD validation built on MSXML6. Supports full (Multiple) error parsing of a given XML.
+Free script utility for simple XML/XSD validation (supports multiple XSD). Fastest XML validation of 'large sized' files (in-memory) without rendering overhead.
+DOM Parser based XML / XSD validation built on MSXML6. Supports full (multiple) error parsing of a given XML.
 
-Also supports Batch (Multiple XML Files) as a single operation. Validate hundreds of XML against a given XSD (single) as one batch operation. Generates verbose log file for all operations and output.
+Also supports Batch (Multiple XML Files) as a single operation. Validate hundreds of XML against a single or multple XSD as one batch operation. Generates verbose log file for all operations and output.
 
 No-frills, lightweight yet powerful! Built on windows native technologies!
 This utility has no dependency on third party compiler / interpreters / engines (e.g. java, nodejs. .NET or other such runtimes).
@@ -38,13 +38,19 @@ Require admin privileges / script execution privileges (elevated UAC prompt) on 
 
 ### Technical Notes (Design)
 
-* The Parser has been designed _not to resolve externals_. It does not evaluate or resolve the schemaLocation or attributes specified in DocumentRoot. The reason is that most of the time schemaLocation is not always valid or resolvable. Hence this design avoids non-schema related errors.
+* The Validation Parser, accepts _multiple XSDs against a given XML_ (XMLs referencing multiple XSDs) for validation since version v2.0.1 (Multi XSD support). However the parser does not auto-import any schemas from network or filesystem, but rather considers only user supplied XSDs, hence make sure you provide all required XSDs.
 
-* The parser validates _strictly against the supplied XSD (schema definition) only without auto-resolving schemaLocation_ or other nameSpace attributes.
+* The Parser has been designed _'not to resolve externals'_. It does not evaluate or resolve the 'schemaLocation' or other attributes specified in DocumentRoot for locating schemas. The reason is that most of the time schemaLocation is not always valid or resolvable as XML travels system to system. _Hence this design avoids non-schema related errors_.
 
-* The parser needs Namespace (targetNamespace) which is currently extracted from the supplied XSD.
+* The parser _validates strictly against the supplied XSD_ (schema definition) only without auto-resolving schemaLocation or other nameSpace attributes from the XML document. This provides robust validation against supplied XSD.
+
+* The validation parser inherently validates all XML for well-formedness / structural.
+
+* The validation _parser needs Namespace (targetNamespace)_ which is currently _extracted from the supplied XSD_. Please make sure that 'targetNamespace' declaration if any, in your XSD is correct. The _targetNamespace decalaration is not mandatory_ and hence XSD without targetNamespace are also validated properly.
 
 * The current version does not support XML files with inline schemas
+
+* Please refer ['Further Reading'](https://github.com/testoxide/vbsx-Validator/wiki/Additional-Notes) section of Wiki for more information if required.
 
 
 ### Built With
