@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<x:book xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+         xsi:schemaLocation='urn:book sl.xsd' xmlns:x="urn:book">
+   <x:author xmlns="urn:book">String</x:author>
+   <x:title xmlns="urn:book">String</x:title>
+   <x:genre xmlns="urn:book">String</x:genre>
+   <x:price xmlns="urn:book">3.141590118408203125</x:price>
+   <x:publish_date xmlns="urn:book">1957-08-13</x:publish_date>
+   <x:description xmlns="urn:book">String</x:description>
+</x:book>

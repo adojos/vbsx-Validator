@@ -1,0 +1,10 @@
+<?xml version='1.0'?>  
+<Collection xmlns="https://www.w3schools.com"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="https://www.w3schools.com Books.xsd" >  
+   <Book xmlns="">  
+      <Title>Lover Birds</Title>  
+      <Author>Cynthia Randall</Author>  
+      <Publisher>Lucerne Publishing</Publisher>  
+   </Book>  
+</Collection>  

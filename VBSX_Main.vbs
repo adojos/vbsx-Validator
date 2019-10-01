@@ -29,12 +29,18 @@ End If
 
 '###########################################################################
 
-Dim LogHandle, strLogPath, strSchemaCacheFail
+Dim LogHandle, strLogPath
+Dim strSchemaCacheFail, strCurrentFileName, oDictOutputFolders
+
 Const strInvalid = "invalid"
 Const strFile = "file"
 Const strFolder = "folder"
 Const strFileExtXSD = ".xsd"
 Const strFileExtXML = ".xml"
+
+Const strMainOutFolder = "MainOutputDir"
+Const strValidOutFolder = "ValidOutputDir"
+Const strInvalidOutFolder = "InvalidOutputDir"
 
 
 Call StartVBSXMain()
@@ -48,6 +54,9 @@ Sub StartVBSXMain()
 	ShowMode ("nomode")
 	strOpsMode = SelectMode()
 	ShowMode (strOpsMode)
+	
+	strCurrentFileName = ""
+	strSchemaCacheFail = False
 	
 	If Not(IsObject(LogHandle)) Then
 		Set LogHandle = CreateLogWriter()
@@ -81,19 +90,17 @@ Public Sub SingleFileValidation()
 Dim ObjSchemaCache, objXMLFile
 Dim strFilePath
 	
-	strSchemaCacheFail = False
 	ConsoleOutput "PROVIDE FULL PATH TO XML FILE (e.g. C:\MyFile.xml) ? ", "verbose", LogHandle
 	strFilePath = ConsoleInput()
 	
 	If IsXMLXSD(strFilePath) = strFileExtXML Then
-	
 		Set objXMLFile = LoadXML(strFilePath)
 		ConsoleOutput "", "verbose", LogHandle
 		
 		Set ObjSchemaCache = GetSchemaCacheForXSDs()
 		
 		If Not(strSchemaCacheFail) Then
-			Call ValidateXML (objXMLFile, ObjSchemaCache)
+			Call ValidateXML (objXMLFile, ObjSchemaCache, False)
 		Else
 			ConsoleOutput "", "verbose", LogHandle
 			ConsoleOutput "<ERROR> NO SCHEMA FILE FOUND OR INVALID INPUT!", "verbose", LogHandle
@@ -133,32 +140,48 @@ End Sub
 
 Public Sub BulkFileValidation()
 
-Dim ObjSchemaCache, objXMLFile, objXSDFile
+Dim ObjSchemaCache, objXMLFile
 Dim strFilePath, strFolderPath, strFileName, arrFileList
 
-	ConsoleOutput "PROVIDE FULL PATH TO SCHEMA FILE (e.g. C:\MySchema.xsd) ? ", "verbose", LogHandle
-	strFilePath = ConsoleInput()	
-	Set objXSDFile = LoadXML(strFilePath)
-	Set ObjSchemaCache = LoadSchemaCache(objXSDFile)	
+Set ObjFSOTemp = CreateObject("Scripting.FileSystemObject")
+Set oDictOutputFolders = GetOutputFolders()
+Set ObjSchemaCache = GetSchemaCacheForXSDs()
 
-	ConsoleOutput "", "verbose", LogHandle
-	
+If Not(strSchemaCacheFail) Then
+
 	ConsoleOutput "PROVIDE PATH TO FOLDER CONTAINING XML FILES (e.g. C:\MyXMLFiles) ? ", "verbose", LogHandle
 	strFolderPath = ConsoleInput()
 
 	arrFileList = GetFolderFiles(strFolderPath, strFileExtXML)
 	If IsArray(arrFileList) Then
 		For Each strFileName In arrFileList
+			strCurrentFileName = ObjFSOTemp.GetFileName(strFileName)
 			Set objXMLFile = LoadXML(strFileName)
-			Call ValidateXML (objXMLFile, ObjSchemaCache)
-			Next
+			Call ValidateXML (objXMLFile, ObjSchemaCache, True)
+		Next
 	Else
+		ConsoleOutput "", "verbose", LogHandle
+		ConsoleOutput "<ERROR> NO XML FILES FOUND OR INVALID INPUT!", "verbose", LogHandle
+		ConsoleOutput "", "verbose", LogHandle
 		If IsReloadExit("") Then
 			Call StartVBSXMain()
 		Else
 			ExitApp()
 		End If
 	End If
+
+Else
+
+	ConsoleOutput "", "verbose", LogHandle
+	ConsoleOutput "<ERROR> NO SCHEMA FILE FOUND OR INVALID INPUT!", "verbose", LogHandle
+	ConsoleOutput "", "verbose", LogHandle
+	If IsReloadExit("") Then
+		Call StartVBSXMain()
+	Else
+		ExitApp()
+	End If
+
+End If
 	
 	If IsReloadExit("") Then
 		Call StartVBSXMain()
@@ -167,7 +190,7 @@ Dim strFilePath, strFolderPath, strFileName, arrFileList
 	End If
 	
 	Set objXMLFile = Nothing
-	Set objXSDFile = Nothing
+	Set ObjSchemaCache = Nothing
 
 End Sub	
 
@@ -261,7 +284,10 @@ End Function
 
 '###########################################################################
 
-Public Function ValidateXML (ObjXMLDoc, ObjXSDDoc)
+Public Function ValidateXML (ObjXMLDoc, ObjXSDDoc, bIsSaveFile)
+
+Dim bValResult, oDictFolders
+Dim strValidDirPath, strInvalidDirPath
 
 Set ObjXMLDoc.Schemas = ObjXSDDoc
 
@@ -269,8 +295,22 @@ ConsoleOutput "", "verbose", LogHandle
 ConsoleOutput vbTab & "******************" & vbTab & "<STARTING VALIDATION> " & vbTab & " ******************" & vbCrLf , "verbose", LogHandle
 
 If ObjXMLDoc.readystate = 4 Then
+	
 	Set ObjXParseErr = ObjXMLDoc.validate()
-	Call ParseValidationError (ObjXParseErr, ObjXMLDoc)
+	bValResult = ParseValidationError (ObjXParseErr, ObjXMLDoc)
+	
+	If (bIsSaveFile) Then
+		strValidDirPath = oDictOutputFolders.Item(strValidOutFolder)
+		strInvalidDirPath = oDictOutputFolders.Item(strInvalidOutFolder)
+		Select Case bValResult
+			Case True
+				ObjXMLDoc.Save(strValidDirPath & "\" & strCurrentFileName)
+			Case False
+				ObjXMLDoc.Save(strInvalidDirPath & "\" & strCurrentFileName)
+		End Select
+	
+	End If
+	
 End If
 
 ConsoleOutput "", "verbose", LogHandle
@@ -332,7 +372,7 @@ Select Case ObjParseErr.errorCode
 							 "XPath Value : " & vbCrLf & ErrorItem.errorXPath & vbCrLf 
 	      'ConsoleOutput ObjXMLDoc.url
 	      ConsoleOutput strResult, "verbose", LogHandle
-	     ErrFound = ErrFound + 1
+	      ErrFound = ErrFound + 1
 	      Next
 	   Else
 			ConsoleOutput "<ERROR> VALIDATION FAILED WITH A SINGLE ERROR !" & vbCrLf, "verbose", LogHandle
@@ -351,6 +391,8 @@ End Select
 
 If ErrFound > 0 Then
 	ParseValidationError = False
+Else 
+	ParseValidationError = True
 End If
 
 End Function
@@ -360,7 +402,16 @@ End Function
 
 'This function takes input form user
 Public Function ConsoleInput()
-ConsoleInput = WScript.StdIn.ReadLine
+Dim strIn
+
+strIn = WScript.StdIn.ReadLine
+
+If (Right(strIn,1) = Chr(34)) And (Left(strIn,1) = Chr(34)) Then
+	strIn = Replace(strIn,Chr(34),"")
+End If
+
+ConsoleInput = strIn
+
 End Function
 
 '###########################################################################
@@ -438,10 +489,11 @@ Do
 	End If
 	
 Loop While (strInput <> "")
-	
-	
-If iFound > 0 Then	
+
+
+If (iFound > 0) And Not(iInvalidCount >= 3) Then	
 	Set GetSchemaCacheForXSDs = ObjSchemaCache
+	strSchemaCacheFail = False
 Else
 	Set GetSchemaCacheForXSDs = ObjSchemaCache
 	strSchemaCacheFail = True
@@ -511,6 +563,37 @@ Set ObjFSO = Nothing
 
 'The Other Methods -
 'sCurrPath = CreateObject("Scripting.FileSystemObject").GetAbsolutePathName(".")
+
+End Function
+
+
+'###########################################################################
+
+
+Function GetOutputFolders ()
+
+sCurrPath = Left(WScript.ScriptFullName,(Len(WScript.ScriptFullName)) - (Len(WScript.ScriptName)))
+strMainFolderName = "Output" & "_" & Day(Date) & MonthName(Month(Date),True) & Right((Year(Date)),2)
+strSubFolderName = Hour(Now) & Minute(Now) & Second(Now)
+
+Set ObjFSO = CreateObject("Scripting.FileSystemObject")
+Set ObjFolderDict = CreateObject("Scripting.Dictionary")
+
+If Not (ObjFSO.FolderExists(sCurrPath & strMainFolderName)) Then
+	Set ObjOutputDir = ObjFSO.CreateFolder(sCurrPath & strMainFolderName)
+	Set ObjValidDir = ObjFSO.CreateFolder(sCurrPath & strMainFolderName & "\" & "Valid" & "_" & strSubFolderName)
+	Set ObjInvalidDir = ObjFSO.CreateFolder(sCurrPath & strMainFolderName & "\" & "Invalid" & "_" & strSubFolderName)
+Else
+	Set ObjOutputDir = ObjFSO.GetFolder(sCurrPath & strMainFolderName)
+	Set ObjValidDir = ObjFSO.CreateFolder(sCurrPath & strMainFolderName & "\" & "Valid" & "_" & strSubFolderName)
+	Set ObjInvalidDir = ObjFSO.CreateFolder(sCurrPath & strMainFolderName & "\" & "Invalid" & "_" & strSubFolderName)
+End if
+
+ObjFolderDict.Add strMainOutFolder,ObjOutputDir.Path
+ObjFolderDict.Add strValidOutFolder,ObjValidDir.Path
+ObjFolderDict.Add strInvalidOutFolder,ObjInvalidDir.Path
+
+Set GetOutputFolders = ObjFolderDict
 
 End Function
 
@@ -605,10 +688,11 @@ If (ObjFSO.FolderExists(strFolderPath)) Then
 	Set ObjFiles = ObjFolder.Files
 	If ObjFiles.Count > 0 Then
 		ConsoleOutput "", "verbose", LogHandle
-		ConsoleOutput "<INFO> Loading Files from folder " & strCurPath, "verbose", LogHandle
+		ConsoleOutput "<INFO> LOADING FILES FROM FOLDER " & strCurPath, "verbose", LogHandle
 		For Each strFile In ObjFiles
 			If (Right(strFile.Path,4) = strFileExtType) Then
-				ConsoleOutput "<INFO> Found File " & strFile.Path, "verbose", LogHandle
+				ConsoleOutput "", "verbose", LogHandle
+				ConsoleOutput "<INFO> Found File : " & strFile.Path, "verbose", LogHandle
 				ReDim Preserve arrObjFiles (iCount)
 				arrObjFiles(iCount) = strFile.Path
 				iCount = iCount + 1
@@ -667,9 +751,9 @@ Dim StrMode
 
 WScript.StdOut.WriteLine "SELECT OPERATING MODE? [Eg. Input 1 for 'Single File Mode']"
 WScript.StdOut.WriteBlankLines(1)
-WScript.StdOut.WriteLine "1. SINGLE FILE [Validate one XML against one XSD] ?"
+WScript.StdOut.WriteLine "1. SINGLE FILE [Single XML against XSD/s] ?"
 WScript.StdOut.WriteBlankLines(1)
-WScript.StdOut.WriteLine "2. BULK FILE [Validate multiple XML against one XSD] ?"
+WScript.StdOut.WriteLine "2. BULK FILE [Multiple XMLs against XSD/s] ?"
 WScript.StdOut.WriteBlankLines(1)
 WScript.StdOut.WriteLine "Tip: Type a bullet number from above and hit Enter."
 WScript.StdOut.WriteBlankLines(1)
