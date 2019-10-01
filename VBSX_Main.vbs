@@ -780,7 +780,7 @@ WScript.StdOut.WriteBlankLines(1)
 WScript.StdOut.WriteLine "      " & "****************************************************************"
 WScript.StdOut.WriteLine "      " & "----------------------------------------------------------------"
 WScript.StdOut.WriteBlankLines(1)
-WScript.StdOut.WriteLine VBTab & vbTab & VBTab & "   " & "VBSX_VALIDATOR version 1.0.2"
+WScript.StdOut.WriteLine VBTab & vbTab & VBTab & "   " & "VBSX_VALIDATOR version 2.0.1"
 WScript.StdOut.WriteBlankLines(1)
 WScript.StdOut.WriteLine VBTab & " Free and Fast XML/XSD Validator. Supports Bulk Validation"
 WScript.StdOut.WriteLine vbTab & "  " & "Full XML Error Parsing (MSXML6) with Offline Log Output"
