@@ -22,6 +22,8 @@ Instead use any latest stable release version, available for download from _[Rel
 Simply double-click the main script file named 'VBSX_Main.vbs' to launch the utility. This will launch the command line interface.
 Please note that you might get UAC prompt if UAC is enabled on your windows.
 
+When running under 'Bulk File Mode', the application would auto-create a main output folder and two sub-folders (valid file folder and Invalid file folder) on your filesystem. The app would auto save the XMLs being validated appropriately into these folders based on validation result.
+
 **Note :** _Drag and Drop may work with UAC disabled._
 
 _Refer [Wiki](https://github.com/testoxide/vbsx-Validator/wiki) for usage tips, screenshots and [video demo](https://github.com/testoxide/vbsx-Validator/wiki/Video-Demo-&-Overview)_
