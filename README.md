@@ -9,7 +9,7 @@ DOM Parser based XML / XSD validation built on MSXML6. Supports full (multiple) 
 Also supports Batch (Multiple XML Files) as a single operation. Validate hundreds of XML against a single or multple XSD as one batch operation. Generates verbose log file for all operations and output.
 
 No-frills, lightweight yet powerful! Built specifically on **windows native** technologies!
-This has **no dependency on third party** compiler / interpreters / engines (e.g. java, nodejs. .NET or other such runtimes).
+This has **no dependency on third party** compiler / interpreters / engines (e.g. java, nodejs. .NET or other such runtimes). However it does utilizes some _'legacy'_ dependencies listed in below sections.
 
 ### Download
 
@@ -56,6 +56,8 @@ Require admin privileges / script execution privileges (elevated UAC prompt) on 
 
 
 ### Built With
+
+Please note, this app is developed on the below **'legacy'** dependencies :
 
 * [VBScript](https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/)
 * [WScript](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc738350(v=ws.10)) 
