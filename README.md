@@ -57,7 +57,7 @@ Require admin privileges / script execution privileges (elevated UAC prompt) on 
 
 ### Built With
 
-Please note, this app is developed on the below **'legacy'** dependencies :
+Please note, this app utilizes the below **'legacy'** dependencies :
 
 * [VBScript](https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/)
 * [WScript](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc738350(v=ws.10)) 
